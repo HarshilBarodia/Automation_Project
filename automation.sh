@@ -53,3 +53,27 @@ aws s3 \
 cp /tmp/${myname}-httpd-logs-${timestamp}.tar \
 s3://${s3_bucket}/${myname}-httpd-logs-${timestamp}.tar
 echo "Tar log files are copied to S3 bucket"
+
+# Creating inventory files
+if [ -e /var/www/html/inventory.html ]
+        then
+                echo "Inventory file already exists"
+        else
+                touch /var/www/html/inventory.html
+                echo "<b>Log Type &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Date Created &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Type &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Size</b>" >> /var/www/html/inventory.html
+                echo "Invenroy file is created"
+        fi
+
+# Updating invenroty file
+echo "<br>${logType}&nbsp;&nbsp;&nbsp;&nbsp;${timestamp}&nbsp;&nbsp;&nbsp;&nbsp;${type}&nbsp;&nbsp;&nbsp;&nbsp;${size}">>/var/www/html/inventory.html
+echo "Inventory file is updated";
+
+# Creation of cron job
+if [ -e /etc/cron.d/automation ]
+then
+        echo "Cron job already exist"
+else
+        touch /etc/cron.d/automation
+        echo "0 0 * * * root /root/Automation_Project/automation.sh" > /etc/cron.d/automation
+        echo "New cron job created"
+fi
